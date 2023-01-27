@@ -1,15 +1,6 @@
 import express from 'express';
-import dotenv from 'dotenv';
 import connect from './config/db';
+import Server from './models/Server';
 
-const app = express();
-
-dotenv.config();
-
-connect();
-
-const PORT: string = process.env.PORT || '4000';
-
-app.listen(PORT, () => {
-	console.log(`Servidor corriendo: puerto: ${PORT}`);
-});
+const server = new Server();
+server.listen();
