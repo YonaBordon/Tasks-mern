@@ -1,5 +1,5 @@
 import express, { Application } from 'express';
-import userRoutes from '../routes/User';
+import userRoutes from '../routes/userRoutes';
 
 import connect from '../config/db';
 import dotenv from 'dotenv';
@@ -8,7 +8,7 @@ class Server {
 	private app: Application;
 	private port: string;
 	private apiPaths = {
-		users: 'api/users',
+		users: '/api/users',
 	};
 
 	constructor() {
@@ -16,11 +16,17 @@ class Server {
 		this.port = process.env.PORT || '4000';
 
 		this.dbConnection();
+		this.middlewares();
+		this.routes();
 	}
 
 	async dbConnection() {
 		dotenv.config();
 		await connect();
+	}
+
+	middlewares() {
+		this.app.use(express.json());
 	}
 
 	routes() {
@@ -29,7 +35,7 @@ class Server {
 
 	listen() {
 		this.app.listen(this.port, () => {
-			console.log(`Servidor corriendo: puerto: ${this.port}`);
+			console.log(`Servidor corriendo: puerto ${this.port}`);
 		});
 	}
 }
